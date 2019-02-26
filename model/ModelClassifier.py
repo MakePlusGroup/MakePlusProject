@@ -62,12 +62,8 @@ class ModelClassifier:
         for shape in file_data:
 
             # Convert list entries to float from strings
-            print('starting compare data in preprocessing scale')
-
             compared_data = preprocessing.scale([float(i.strip()) for i in shape[1].split(',')])
             # Create histograms
-            print('creating histograms')
-
             print('getting data ', len(compared_data))
             compared_data1 = [x for x in compared_data if str(x) != 'nan']
 
@@ -110,7 +106,7 @@ class ModelClassifier:
     def generate_distribution_data(self, vertices):
         print("in gen dist data")
 
-        """ Generate enough data for precise model comparisons
+        """ Generate enough data for precise model comparisons                 
         Arguments:
             vertices {List} -- a nested list containing the vertices of the loaded model object
         Returns:
@@ -147,7 +143,6 @@ class ModelClassifier:
                 break
 
         area = self.area(vertex_pair)
-        print(area * 10000)
         return area * 10000
 
     # determinant of matrix a
@@ -166,7 +161,11 @@ class ModelClassifier:
         z = self.det([[a[0], a[1], 1],
                       [b[0], b[1], 1],
                       [c[0], c[1], 1]])
+
         magnitude = (x ** 2 + y ** 2 + z ** 2) ** .5
+
+        if magnitude == 0:
+            magnitude = 1
         return (x / magnitude, y / magnitude, z / magnitude)
 
     # dot product of vectors a and b
