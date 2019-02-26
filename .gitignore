@@ -10,3 +10,4 @@
 /model/training_data.csv
 /model/training_data.zip
 /venv
+__pycache__
