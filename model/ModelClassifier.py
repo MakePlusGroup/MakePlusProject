@@ -103,6 +103,24 @@ class ModelClassifier:
             print('intersection is ', intersection)
         return match_data
 
+    def generate_hist(self, data):
+        # lite version of compare models which will return histogram details
+        print("in generate hist")
+
+        """ Generates histogram data.
+
+        Arguments:
+            data {List} -- contains a list of various distances taken between numerous random points
+        Returns:
+            List -- List of points used to make comparisons between objects
+        """
+
+        data1 = [x for x in data if str(x) != 'nan']
+
+        loaded_file_data, _ = np.histogram(data1, bins=40)
+
+        return loaded_file_data
+
     def generate_distribution_data(self, vertices):
         print("in gen dist data")
 
@@ -118,6 +136,26 @@ class ModelClassifier:
             for i in range(924 ^ 2):
                 distribution_data.append(self._calc_length(vertices))
         return distribution_data
+
+    def hist_distribution_data(self, vertices):
+        print("in gen hist dist data")
+
+        """ Sends histogram data back csv file editor:
+            vertices {List} -- a nested list containing the vertices of the loaded model object
+        Returns:
+            List -- a list containing distances measured between any two random vertices
+        """
+
+        distribution_data = []
+        for b in range(924):
+            for i in range(924 ^ 2):
+                distribution_data.append(self._calc_length(vertices))
+
+        hist_data = preprocessing.scale(distribution_data)
+
+        hist_list = self.generate_hist(hist_data)
+
+        return hist_list
 
     def _calc_length(self, vertices):
         """ Measures the distance between two random points in 3 dimensional space.
@@ -253,9 +291,3 @@ class ModelClassifier:
         """
 
         return sum(lst) / len(lst)
-
-
-if __name__ == "__main__":
-    mesh = ModelClassifier(
-        './scans/test_scans/Cube_Test01_BoxSize_Small(0).obj')
-    mesh.classify()
