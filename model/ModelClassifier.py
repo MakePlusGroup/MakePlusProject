@@ -43,7 +43,7 @@ class ModelClassifier:
 
         self.results = self.compare_models(self.data)
 
-    def compare_models(self, data):
+    def compare_models_old(self, data):
         print("in compare models")
 
         """ Compares histograms by determining how much the two graphs intersect
@@ -103,18 +103,54 @@ class ModelClassifier:
             print('intersection is ', intersection)
         return match_data
 
+    def compare_models(self, data):
+        print("in compare models")
+
+        # Loads data from object_data.csv file
+        file_data = self._get_shape_data()
+        match_data = [[], []]
+
+        # Loop through file_data to find the best matching shape for the input scan
+        for shape in file_data:
+
+            # Convert list entries to float from strings
+            print('grabbing from hist data csv ')
+            compared_list = np.asarray(shape)
+            just_nums = []
+            for i in compared_list[1:]:
+                just_nums.append(i)
+            print('ref lib data ', just_nums)
+            data1 = [x for x in data if str(x) != 'nan']
+
+            loaded_file_data, _ = np.histogram(data1, bins=40)
+            print('success loaded_file_data ', loaded_file_data)
+
+            # Compare histograms
+            # Get the minimum data points between two Lists for each index
+            minima = np.minimum(just_nums, loaded_file_data)
+            # Calculate the percentage of overlap between the two sets of data
+            print('minima is ', minima)
+
+            intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
+            if shape[0] not in match_data[0]:
+                match_data[0].append(shape[0])
+                match_data[1].append(intersection * 100)
+                print("shape 0", shape[0])
+                print("match data 0", match_data[0])
+
+            elif intersection * 100 >= match_data[1][match_data[0].index(shape[0])]:
+                match_data[1][match_data[0].index(shape[0])] = intersection * 100
+
+            if intersection * 100 >= max(match_data[1]):
+                self.matching_shape = shape[0]
+                self.existing_data = just_nums
+
+            print('intersection is ', intersection)
+        return match_data
+
     def generate_hist(self, data):
         # lite version of compare models which will return histogram details
         print("in generate hist")
-
-        """ Generates histogram data.
-
-        Arguments:
-            data {List} -- contains a list of various distances taken between numerous random points
-        Returns:
-            List -- List of points used to make comparisons between objects
-        """
-
         data1 = [x for x in data if str(x) != 'nan']
 
         loaded_file_data, _ = np.histogram(data1, bins=40)
@@ -248,8 +284,9 @@ class ModelClassifier:
             List -- contains list data of previous objects created from generate_distribution_data
         """
         try:
-            with open(os.path.join(os.path.dirname(__file__), "object_data.csv"), 'r') as data:
+            with open(os.path.join(os.path.dirname(__file__), "hist_data.csv"), 'r') as data:
                 file_data = pd.read_csv(data, header=None)
+
                 return list(file_data.values)
         except FileNotFoundError:
             zip_ref = zipfile.ZipFile(os.path.join(
