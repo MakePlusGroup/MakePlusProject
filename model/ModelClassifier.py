@@ -140,7 +140,7 @@ class ModelClassifier:
     def hist_distribution_data(self, vertices):
         print("in gen hist dist data")
 
-        """ Sends histogram data back csv file editor:
+        """ Sends histogram data back csv file editor. Does the same thing as classify function minus compare_models:
             vertices {List} -- a nested list containing the vertices of the loaded model object
         Returns:
             List -- a list containing distances measured between any two random vertices
