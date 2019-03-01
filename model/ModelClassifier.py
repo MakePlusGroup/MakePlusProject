@@ -39,12 +39,9 @@ class ModelClassifier:
         """
 
         self.data = preprocessing.scale(self.generate_distribution_data(self.mesh_object.vertices))
-        print("printing self.data ", self.data)
-
         self.results = self.compare_models(self.data)
 
     def compare_models_old(self, data):
-        print("in compare models")
 
         """ Compares histograms by determining how much the two graphs intersect
 
@@ -104,8 +101,6 @@ class ModelClassifier:
         return match_data
 
     def compare_models(self, data):
-        print("in compare models")
-
         # Loads data from object_data.csv file
         file_data = self._get_shape_data()
         match_data = [[], []]
@@ -114,29 +109,22 @@ class ModelClassifier:
         for shape in file_data:
 
             # Convert list entries to float from strings
-            print('grabbing from hist data csv ')
             compared_list = np.asarray(shape)
             just_nums = []
             for i in compared_list[1:]:
                 just_nums.append(i)
-            print('ref lib data ', just_nums)
             data1 = [x for x in data if str(x) != 'nan']
 
             loaded_file_data, _ = np.histogram(data1, bins=40)
-            print('success loaded_file_data ', loaded_file_data)
-
             # Compare histograms
             # Get the minimum data points between two Lists for each index
             minima = np.minimum(just_nums, loaded_file_data)
             # Calculate the percentage of overlap between the two sets of data
-            print('minima is ', minima)
-
             intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
             if shape[0] not in match_data[0]:
                 match_data[0].append(shape[0])
                 match_data[1].append(intersection * 100)
-                print("shape 0", shape[0])
-                print("match data 0", match_data[0])
+
 
             elif intersection * 100 >= match_data[1][match_data[0].index(shape[0])]:
                 match_data[1][match_data[0].index(shape[0])] = intersection * 100
@@ -145,12 +133,10 @@ class ModelClassifier:
                 self.matching_shape = shape[0]
                 self.existing_data = just_nums
 
-            print('intersection is ', intersection)
         return match_data
 
     def generate_hist(self, data):
         # lite version of compare models which will return histogram details
-        print("in generate hist")
         data1 = [x for x in data if str(x) != 'nan']
 
         loaded_file_data, _ = np.histogram(data1, bins=40)
@@ -158,7 +144,6 @@ class ModelClassifier:
         return loaded_file_data
 
     def generate_distribution_data(self, vertices):
-        print("in gen dist data")
 
         """ Generate enough data for precise model comparisons                 
         Arguments:
@@ -174,7 +159,6 @@ class ModelClassifier:
         return distribution_data
 
     def hist_distribution_data(self, vertices):
-        print("in gen hist dist data")
 
         """ Sends histogram data back csv file editor. Does the same thing as classify function minus compare_models:
             vertices {List} -- a nested list containing the vertices of the loaded model object
@@ -326,5 +310,4 @@ class ModelClassifier:
         Returns:
             Float -- average number of the input list
         """
-
         return sum(lst) / len(lst)
