@@ -292,8 +292,8 @@ class ModelClassifier:
             shape {String} -- Name of the object the input scan is being compared to
         """
 
-        sns.distplot(data1, bins=40, color='blue', label=shape)
-        sns.distplot(data2, bins=40, color='red', label='Input Scan')
+        sns.kdeplot(data1, color='blue', shade=True, label=shape)
+        sns.kdeplot(data2, color='red', shade=True, label='Input Scan')
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
