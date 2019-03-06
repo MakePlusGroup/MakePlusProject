@@ -108,11 +108,11 @@ class ModelClassifier:
         # Loop through file_data to find the best matching shape for the input scan
         for shape in file_data:
 
-            # Convert list entries to float from strings
             compared_list = np.asarray(shape)
             just_nums = []
             for i in compared_list[1:]:
                 just_nums.append(i)
+
             data1 = [x for x in data if str(x) != 'nan']
 
             loaded_file_data, _ = np.histogram(data1, bins=40)
@@ -125,13 +125,13 @@ class ModelClassifier:
                 match_data[0].append(shape[0])
                 match_data[1].append(intersection * 100)
 
-
             elif intersection * 100 >= match_data[1][match_data[0].index(shape[0])]:
                 match_data[1][match_data[0].index(shape[0])] = intersection * 100
 
             if intersection * 100 >= max(match_data[1]):
+                just_nums_histo = preprocessing.scale(just_nums)
                 self.matching_shape = shape[0]
-                self.existing_data = just_nums
+                self.existing_data = just_nums_histo
 
         return match_data
 
