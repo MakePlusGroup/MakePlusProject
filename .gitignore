@@ -11,3 +11,6 @@
 /model/training_data.zip
 /venv
 __pycache__
+*.pyc
+*.pyc
+*.pyc

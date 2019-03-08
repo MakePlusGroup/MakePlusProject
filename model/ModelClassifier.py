@@ -28,6 +28,7 @@ class ModelClassifier:
         self.data = []
         self.existing_data = []
         self.matching_shape = ''
+        self.highest = []
 
     def classify(self):
 
@@ -41,69 +42,15 @@ class ModelClassifier:
         self.data = preprocessing.scale(self.generate_distribution_data(self.mesh_object.vertices))
         self.results = self.compare_models(self.data)
 
-    def compare_models_old(self, data):
-
-        """ Compares histograms by determining how much the two graphs intersect
-
-        Arguments:
-            data {List} -- contains a list of various distances taken between numerous random points
-        Returns:
-            Tuple -- a tuple containing the final results of the comparisons
-        """
-
-        # Loads data from object_data.csv file
-        file_data = self._get_shape_data()
-        match_data = [[], []]
-
-        # Loop through file_data to find the best matching shape for the input scan
-        for shape in file_data:
-
-            # Convert list entries to float from strings
-            compared_data = preprocessing.scale([float(i.strip()) for i in shape[1].split(',')])
-            # Create histograms
-            print('getting data ', len(compared_data))
-            compared_data1 = [x for x in compared_data if str(x) != 'nan']
-
-            classify_data, _ = np.histogram(compared_data1, bins=40)
-            print('loaded histograms', classify_data)
-            print('getting data ', len(data))
-
-            data1 = [x for x in data if str(x) != 'nan']
-
-            loaded_file_data, _ = np.histogram(data1, bins=40)
-            print('success loaded_file_data ', loaded_file_data)
-
-            # Compare histograms
-            # Get the minimum data points between two Lists for each index
-            print('getting minima')
-
-            minima = np.minimum(classify_data, loaded_file_data)
-            # Calculate the percentage of overlap between the two sets of data
-            print('minima is ', minima)
-            print('getting intersection')
-
-            intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
-
-            if shape[0] not in match_data[0]:
-                match_data[0].append(shape[0])
-                match_data[1].append(intersection * 100)
-                print("shape 0", shape[0])
-                print("match data 0", match_data[0])
-
-            elif intersection * 100 >= match_data[1][match_data[0].index(shape[0])]:
-                match_data[1][match_data[0].index(shape[0])] = intersection * 100
-
-            if intersection * 100 >= max(match_data[1]):
-                self.matching_shape = shape[0]
-                self.existing_data = compared_data
-
-            print('intersection is ', intersection)
-        return match_data
-
     def compare_models(self, data):
         # Loads data from object_data.csv file
         file_data = self._get_shape_data()
         match_data = [[], []]
+
+        data1 = [x for x in data if str(x) != 'nan']
+
+        loaded_file_data, _ = np.histogram(data1, bins=40)
+        self.highest.append(loaded_file_data.tolist())
 
         # Loop through file_data to find the best matching shape for the input scan
         for shape in file_data:
@@ -113,9 +60,6 @@ class ModelClassifier:
             for i in compared_list[1:]:
                 just_nums.append(i)
 
-            data1 = [x for x in data if str(x) != 'nan']
-
-            loaded_file_data, _ = np.histogram(data1, bins=40)
             # Compare histograms
             # Get the minimum data points between two Lists for each index
             minima = np.minimum(just_nums, loaded_file_data)
@@ -133,7 +77,9 @@ class ModelClassifier:
                 self.matching_shape = shape[0]
                 self.existing_data = just_nums_histo
 
+        print("loaded file data is ", self.highest)
         return match_data
+
 
     def generate_hist(self, data):
         # lite version of compare models which will return histogram details
@@ -292,8 +238,8 @@ class ModelClassifier:
             shape {String} -- Name of the object the input scan is being compared to
         """
 
-        sns.kdeplot(data1, color='blue', shade=True, label=shape)
-        sns.kdeplot(data2, color='red', shade=True, label='Input Scan')
+        sns.distplot(data1, bins=40, color='blue', label=shape)
+        sns.distplot(data2, bins=40, color='red', label='Input Scan')
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
