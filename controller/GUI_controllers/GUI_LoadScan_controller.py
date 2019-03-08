@@ -40,10 +40,15 @@ class LoadScan_controller:
         emp_list.append(self.name_test_grab)
         print("new list with name ", self.name_test_grab)
 
-        with open('model\save_data.csv', 'w', newline='') as myfile:
-            wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        with open('model\hist_data.csv', 'a') as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_ALL)
             for each in emp_list:
-                wr.writerow(each)
+                writer.writerow(each)
+
+         # with open('model\save_data.csv', 'w', newline='') as myfile:
+         #     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+         #     for each in emp_list:
+         #         wr.writerow(each)
 
 
     def openFile(self):
