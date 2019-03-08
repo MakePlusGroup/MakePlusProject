@@ -7,7 +7,7 @@ optimized_library = []
 def optimize(file):
     current_lib = []
     obj_list = []
-    to_optimize = []
+    to_optimize = [[1],[2]]
     file_read = open(file, "r")
     file_data = csv.reader(file_read)
     for row in file_data:
@@ -17,12 +17,12 @@ def optimize(file):
         current_lib.append(current_line)
 
     for x, row in enumerate(current_lib):
-        print(x, row)
         if row[0] not in obj_list:
             print("new object")
-            for i in range(1, 2):
-                print(row[i])
-                to_optimize.append(row[i])
+            print(x, row)
+            obj_list.append(row[0])
+            for i in range(1, len(row)):
+                to_optimize[i].append([row[i]])
 
     print(to_optimize)
 
