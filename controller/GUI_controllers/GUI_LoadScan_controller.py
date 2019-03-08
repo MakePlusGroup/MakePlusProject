@@ -45,12 +45,6 @@ class LoadScan_controller:
             for each in emp_list:
                 writer.writerow(each)
 
-         # with open('model\save_data.csv', 'w', newline='') as myfile:
-         #     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-         #     for each in emp_list:
-         #         wr.writerow(each)
-
-
     def openFile(self):
         """
             Opens file explorer for user to input the desired scan for classification
@@ -63,7 +57,7 @@ class LoadScan_controller:
             main_frame.current_frame.Data_listbox.insert(END, "Loaded file: {}".format(fname[-1]))
             self.classifier = ModelClassifier(filename)
 
-            main_frame.current_frame.hist_but.config(state=DISABLED)
+            main_frame.current_frame.hist_but.config(state=NORMAL)
             main_frame.current_frame.show_but.config(state=NORMAL)
 
     def output_classifier(self):
@@ -118,7 +112,6 @@ class LoadScan_controller:
 
 if __name__ == "__main__":
     root = Tk()
-    App = LoadScan_controller(root).pack()
     frame = CorS_UI(root)
     ui = LoadGet_controller(root)
     mainloop()
