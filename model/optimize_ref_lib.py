@@ -6,8 +6,7 @@ optimized_library = []
 
 def optimize(file):
     current_lib = []
-    obj_list = []
-    to_optimize = [[1],[2]]
+    unique_obj_list = []
     file_read = open(file, "r")
     file_data = csv.reader(file_read)
     for row in file_data:
@@ -16,15 +15,25 @@ def optimize(file):
             current_line.append(cell)
         current_lib.append(current_line)
 
+    # Adding object types to obj_list
     for x, row in enumerate(current_lib):
-        if row[0] not in obj_list:
+        if row[0] not in unique_obj_list:
             print("new object")
-            print(x, row)
-            obj_list.append(row[0])
-            for i in range(1, len(row)):
-                to_optimize[i].append([row[i]])
+            unique_obj_list.append(row[0])
 
-    print(to_optimize)
+    # Create lists of each unique object
+    for item in unique_obj_list:
+        list_of_obj_lists = [[item]]
+        for row in current_lib:
+            if row[0] == item:
+                list_of_obj_lists.append(row[1:])
+
+        print(list_of_obj_lists)
+
+        # Convert the entries into median values.
+
+        for i, obj_list in list_of_obj_lists:
+            print(i, obj_list)
 
 
 if __name__ == '__main__':

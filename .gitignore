@@ -15,3 +15,6 @@ __pycache__
 *.pyc
 *.pyc
 view/__pycache__/
+controller/__pycache__/
+model/__pycache__/
+view_kivy/__pycache__/
