@@ -31,9 +31,10 @@ def optimize(file):
         print(list_of_obj_lists)
 
         # Convert the entries into median values.
-
-        for i, obj_list in list_of_obj_lists:
-            print(i, obj_list)
+        for i in range(1, len(list_of_obj_lists)):
+            obj_list = list_of_obj_lists[i]
+            for x in range(0, len(obj_list)):
+                list_of_obj_lists[i][x]
 
 
 if __name__ == '__main__':
