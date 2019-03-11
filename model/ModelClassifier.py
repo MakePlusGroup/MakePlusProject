@@ -213,7 +213,7 @@ class ModelClassifier:
             List -- contains list data of previous objects created from generate_distribution_data
         """
         try:
-            with open(os.path.join(os.path.dirname(__file__), "hist_data.csv"), 'r') as data:
+            with open(os.path.join(os.path.dirname(__file__), "ref_lib_data.csv"), 'r') as data:
                 file_data = pd.read_csv(data, header=None)
 
                 return list(file_data.values)
