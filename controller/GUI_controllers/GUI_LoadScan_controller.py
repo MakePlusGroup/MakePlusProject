@@ -6,9 +6,14 @@ from model import ModelClassifier
 from os import path
 from _thread import start_new_thread
 from tkinter import messagebox
+from model.ShowHistogram import ShowHistogram
+import os
+import numpy as np
+import pandas as pd
 from tkinter.ttk import Frame, Button, Style, Label
 import traceback
 import csv
+
 
 class LoadScan_controller:
 
@@ -19,6 +24,7 @@ class LoadScan_controller:
         self.test_classifier = ''
         self.test_grab = []
         self.name_test_grab = []
+        self.start_counter = 0
         self.highest_percent_res = ''
 
         main_frame.current_frame = LoadScan_UI(self.master, self.img)
@@ -28,7 +34,6 @@ class LoadScan_controller:
         main_frame.current_frame.hist_but.config(command=lambda: self.show_histogram())
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
         main_frame.current_frame.more_but.config(command=lambda: self.openSave())
-
 
     def openSave(self):
 
@@ -65,12 +70,13 @@ class LoadScan_controller:
             Calls the classifier to process the input model
         """
         counter = 0
+        self.start_counter = 1
         try:
             if self.classifier.mesh_object != "":
                 counter = counter + 1
                 main_frame.current_frame.Data_listbox.insert(END, "Processing...")
                 self.classifier.classify()
-                print("self.classifier results" ,self.classifier.results[0])
+                print("self.classifier results", self.classifier.results[0])
 
                 for idx in range(len(self.classifier.results[0])):
                     main_frame.current_frame.Data_listbox.insert(
@@ -92,9 +98,21 @@ class LoadScan_controller:
         """
             Asynch does not work here for some reason
         """
-        main_frame.current_frame.Data_listbox.insert(END, "Generating Histogram...")
-        self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data,
-                                       self.classifier.matching_shape)
+
+        if self.start_counter != 0:
+            main_frame.current_frame.Data_listbox.insert(END, "Generating Histogram...")
+            self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data,
+                                           self.classifier.matching_shape)
+            print(type(self.classifier.existing_data), type(self.classifier.data))
+        else:
+            print("showing cubes")
+            show_histo = ShowHistogram("hi")
+            show_histo.find_shapes()
+            # show_histo.show_cubes()
+
+            print("done showing cubes")
+            # print("show classifier.big_list ", show_histo.big_list)
+            show_histo.compare_histogram()
 
     def show_mesh(self):
         """
@@ -110,6 +128,7 @@ class LoadScan_controller:
         LoadGet_controller(self.master)
 
 
+# variation between the shapes
 if __name__ == "__main__":
     root = Tk()
     frame = CorS_UI(root)
