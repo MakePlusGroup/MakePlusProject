@@ -259,7 +259,7 @@ class ModelClassifier:
                 return list(file_data.values)
 
     @staticmethod
-    def show_histogram(data1, data2, data3, data4, data5):
+    def show_histogram( comparedata, data1, shape):
         """ Displays a histogram that visualizes the comparison between the two
         histograms
 
@@ -269,11 +269,9 @@ class ModelClassifier:
             shape {String} -- Name of the object the input scan is being compared to
         """
 
-        sns.kdeplot(data1, color='blue', label='Cube 1')
-        sns.kdeplot(data2, color='red', label='Cube 2')
-        sns.kdeplot(data3, color='green', label='Cube 3')
-        sns.kdeplot(data4, color='orange', label='Cube 4')
-        sns.kdeplot(data5, color='yellow',  label='Cube 5')
+        sns.kdeplot(data1, color='blue', label='Loaded scan')
+        sns.kdeplot(comparedata, color='red', label='Reference')
+
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
