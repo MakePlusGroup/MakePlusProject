@@ -78,7 +78,7 @@ class LoadScan_UI(UI):
         self.classify_but = Button(self.botbut_frame, text='Classify', width=10)
         self.classify_but.grid(row=1, column=3, pady=15)
 
-        self.more_but = Button(self.botbut_frame, text='Add to Lib', width=10)
+        self.more_but = Button(self.botbut_frame, state=DISABLED, text='Add to Lib', width=10)
         self.more_but.grid(row=1, column=4, pady=15)
 
 

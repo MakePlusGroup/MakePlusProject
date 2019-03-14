@@ -36,19 +36,46 @@ class LoadScan_controller:
         main_frame.current_frame.more_but.config(command=lambda: self.openSave())
 
     def openSave(self):
+        print('open save')
+        result = messagebox.askquestion("Add To Reference Library", "Are You Sure You Want to Add to Library?",
+                                        icon='warning')
 
-        print("save button clicked")
-        print("grabbing loaded scan from classifier ", self.test_grab)
-        for each in self.test_grab[0]:
-            self.name_test_grab.append(str(each))
-        emp_list = []
-        emp_list.append(self.name_test_grab)
-        print("new list with name ", self.name_test_grab)
+        check_duplicate = []
+        if result == 'yes':
+            print("save button clicked")
+            print("grabbing loaded scan from classifier ", self.test_grab)
 
-        with open('model\hist_data.csv', 'a') as f:
-            writer = csv.writer(f, quoting=csv.QUOTE_ALL)
-            for each in emp_list:
-                writer.writerow(each)
+            with open('./model/hist_data.csv', 'r') as data:
+                file_data = pd.read_csv(data, header=None, error_bad_lines=False)
+                ref_lib_list = list(file_data.values)
+
+                for each in ref_lib_list:
+                    if each[0] == self.classifier.matching_shape:
+                        print('there is a ', self.classifier.matching_shape, " in the lib!")
+                        check_duplicate.append(each[1:])
+
+            for each in check_duplicate:
+                print("each in check duplicate ", list(each))
+                list_each = list(each)
+                print('self.test_grab', self.test_grab[0])
+                if list_each == self.test_grab[0]:
+                    messagebox.showinfo("Warning", "Entry already exists in database")
+                    return
+
+            for each in self.test_grab[0]:
+                print(' each is ', each)
+                self.name_test_grab.append(str(each))
+            emp_list = []
+            emp_list.append(self.name_test_grab)
+            print("new list with name ", self.name_test_grab)
+            print('emp list is ', emp_list)
+            print('name test grab is ', self.name_test_grab)
+            with open('model/hist_data.csv', 'a') as f:
+                writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+                for each in emp_list:
+                    writer.writerow(each)
+        else:
+            print("no")
 
     def openFile(self):
         """
@@ -89,6 +116,8 @@ class LoadScan_controller:
                 self.name_test_grab.append(self.classifier.matching_shape)
                 print("highest percent result type is ", self.name_test_grab)
                 self.test_grab = self.classifier.highest
+                main_frame.current_frame.more_but.config(state=NORMAL)
+
 
 
         except:
@@ -111,7 +140,6 @@ class LoadScan_controller:
             # show_histo.show_cubes()
 
             print("done showing cubes")
-            # print("show classifier.big_list ", show_histo.big_list)
             show_histo.compare_histogram()
 
     def show_mesh(self):
