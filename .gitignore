@@ -21,3 +21,6 @@ view_kivy/__pycache__/
 *.pyc
 *.pyc
 controller/__pycache__/GUI_main_controller.cpython-37.pyc
+controller\__pycache__\
+controller\GUI_controllers\__pycache__\
+controller/GUI_controllers/__pycache__/
