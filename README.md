@@ -19,14 +19,9 @@ Python is required to be able to run this program.
 
 
 ## Known Application Bugs
-- Histogram is slow to load due to tkinter limitations
-- Mail parser does not show the correct errors
 - If show model window is open, the main GUI window will not update until the show model window is closed
-- If show model window is open,  application will not classify properly
-- When the classify button is repeatedly pressed multiple times, the application will become not responding
+- When the classify button is repeatedly pressed multiple times, the application will stall.
 - When classifying is processing and user clicks any button before processing is complete will cause the program to not function properly
-- Prone to crash when histogram and show model window are open at the same time
-- When logged into mail parser, if you leave screen or close application an error will show
 
 ## Installation:
 
@@ -41,15 +36,8 @@ In a terminal window, cd to a location you want to save the repository to. Run o
 
 ### Clone the repository using HTTPS:
 ```
-git clone https://github.com/emilieez/pyscan.git
+git clone https://github.com/MakePlusGroup/MakePlusProject.git
 ```
-
-### Clone the repository using SSH:
-
-```
-git clone git@github.com:emilieez/pyscan.git
-```
-
 ### Installing Dependencies
 A [virtual environment](#Run-the-PyScan-virtual-environment) is provided if the dependencies are not installed.
 However, all dependencies can be installed using this command in the root folder of the repository:
@@ -114,11 +102,11 @@ python pyscan.py
 
 ### Main Screen
 
-<img src="https://raw.githubusercontent.com/BCIT-MakePlus/pyscan/master/screenshots/main_screen.png" width="400" height="400" />
+<img src="https://raw.githubusercontent.com/MakePlusGroup/MakePlusProject/master/screenshots/main_screen.png" width="400" height="400" />
 
 ### Downloading Scans
 
-<img src="https://raw.githubusercontent.com/BCIT-MakePlus/pyscan/master/screenshots/download_screen.png" width="400" height="400" />
+<img src="https://raw.githubusercontent.com/MakePlusGroup/MakePlusProject/master/screenshots/download_screen.png" width="400" height="400" />
 
 ##### Once the scans have been sent to your email from the iPad, you can directly download the file here.
 ##### Currently, only Gmail and Outlook are supported for this application.
@@ -126,7 +114,7 @@ python pyscan.py
 
 ### Classify the downloaded scans
 
-<img src="https://raw.githubusercontent.com/BCIT-MakePlus/pyscan/master/screenshots/classify_results_screen.png" width="400" height="400" />
+<img src="https://raw.githubusercontent.com/MakePlusGroup/MakePlusProject/master/screenshots/classify_results_screen.png" width="400" height="400" />
 
 ##### This allows you to load in a single .obj or .ply file to compare it to the data saved in the object_data.csv file.
 
@@ -138,13 +126,13 @@ python pyscan.py
 
 ### Show Model
 
-<img src="https://raw.githubusercontent.com/BCIT-MakePlus/pyscan/master/screenshots/Show_Model.png" position="relative" width="800" height="400" />
+<img src="https://raw.githubusercontent.com/MakePlusGroup/MakePlusProject/master/screenshots/Show_Model.png" position="relative" width="800" height="400" />
 
 ##### Press 'W' to switch to wireframe view (right image)
 
 ### Show Comparison
 
-<img src="https://raw.githubusercontent.com/BCIT-MakePlus/pyscan/master/screenshots/show_comparison_screen.png" width="400" height="400" />
+<img src="https://raw.githubusercontent.com/MakePlusGroup/MakePlusProject/master/screenshots/show_comparison_screen.png" width="400" height="400" />
 
 ##### The blue colored histogram is the data stored in the object_data.csv.
 
